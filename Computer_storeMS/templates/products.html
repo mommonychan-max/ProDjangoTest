@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products | TechNova{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+
+    <div class="row g-4">
+
+        <div class="col-lg-3">
+            <div class="sidebar-box">
+
+                <h5 class="mb-3">Categories</h5>
+
+                <a href="{% url 'products' %}" class="d-block text-decoration-none text-light mb-2">
+                    All Products
+                </a>
+
+                {% for category in categories %}
+                <a href="?category={{ category.id }}" class="d-block text-decoration-none text-muted mb-2">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+
+                <hr class="border-secondary">
+
+                <h5 class="mb-3">Search</h5>
+
+                <form method="GET">
+                    <input type="text" name="search" class="form-control mb-3" placeholder="Search products...">
+                    <button class="btn btn-primary w-100">Search</button>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>All Products</h2>
+
+                <select class="form-select w-auto">
+                    <option>Sort by Featured</option>
+                    <option>Price Low to High</option>
+                    <option>Newest</option>
+                </select>
+            </div>
+
+            <div class="row g-4">
+
+                {% for product in products %}
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="neon-card product-card p-3 h-100">
+
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="w-100 mb-3">
+                        {% else %}
+                        <img src="{% static 'img/product.png' %}" class="w-100 mb-3">
+                        {% endif %}
+
+                        <h6>{{ product.name }}</h6>
+
+                        <p class="text-muted small mb-1">{{ product.brand }}</p>
+
+                        <div class="text-warning small mb-2">
+                            ★★★★★
+                        </div>
+
+                        <p class="price">${{ product.price }}</p>
+
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm flex-fill">
+                                Add to Cart
+                            </a>
+
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-light btn-sm">
+                                View
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+                {% empty %}
+
+                <div class="col-12">
+                    <div class="neon-card p-5 text-center">
+                        <h4>No products found</h4>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
