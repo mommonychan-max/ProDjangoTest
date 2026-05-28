@@ -19,7 +19,7 @@
                 </a>
 
                 {% for category in categories %}
-                <a href="?category={{ category.id }}" class="d-block text-decoration-none text-muted mb-2">
+                <a href="?category={{ category.id }}" class="d-block text-decoration-none text-light mb-2">
                     {{ category.name }}
                 </a>
                 {% endfor %}
@@ -53,25 +53,47 @@
                 {% for product in products %}
                 <div class="col-lg-4 col-md-6">
 
-                    <div class="neon-card product-card p-3 h-100">
+                    <div class="neon-card p-3 h-100 d-flex flex-column" style="
+                border-radius:15px;
+                overflow:hidden;
+                min-height:500px;
+             ">
 
                         {% if product.image %}
-                        <img src="{{ product.image.url }}" class="w-100 mb-3">
+                        <img src="{{ product.image.url }}" class="w-100 mb-3" style="
+                    height:250px;
+                    object-fit:cover;
+                    border-radius:10px;
+                 ">
                         {% else %}
-                        <img src="{% static 'img/product.png' %}" class="w-100 mb-3">
+                        <img src="{% static 'img/product.png' %}" class="w-100 mb-3" style="
+                    height:250px;
+                    object-fit:cover;
+                    border-radius:10px;
+                 ">
                         {% endif %}
 
-                        <h6>{{ product.name }}</h6>
+                        <h6 style="min-height:50px;">
+                            {{ product.name }}
+                        </h6>
 
-                        <p class="text-muted small mb-1">{{ product.brand }}</p>
+                        <p class="text-light small mb-1">
+                            {{ product.brand }}
+                        </p>
 
                         <div class="text-warning small mb-2">
                             ★★★★★
                         </div>
 
-                        <p class="price">${{ product.price }}</p>
+                        <p class="price" style="
+                    font-size:22px;
+                    font-weight:bold;
+               ">
+                            ${{ product.price }}
+                        </p>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 mt-auto">
+
                             <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm flex-fill">
                                 Add to Cart
                             </a>
@@ -79,11 +101,13 @@
                             <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-light btn-sm">
                                 View
                             </a>
+
                         </div>
 
                     </div>
 
                 </div>
+
                 {% empty %}
 
                 <div class="col-12">
