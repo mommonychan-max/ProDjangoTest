@@ -230,3 +230,16 @@ form select:focus {
     border-color: #2563eb !important;
     box-shadow: none !important;
 }
+.text-muted {
+    color: #94a3b8 !important;
+}
+
+/* true white text */
+.text-white {
+    color: #ffffff !important;
+}
+
+/* optional: softer white */
+.text-white-soft {
+    color: #e5e7eb !important;
+}

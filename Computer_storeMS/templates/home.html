@@ -17,7 +17,7 @@
             With <span>Technology</span>
         </h1>
 
-        <p class="text-muted mt-4 hero-text">
+        <p class=" mt-4 hero-text">
             Discover high-performance computers,
             gaming laptops, accessories and premium tech gear.
         </p>
@@ -38,45 +38,47 @@
 
 </section>
 
+{% load static %}
+
 <section class="container py-4">
     <div class="row g-4">
 
+        <!-- BOX 1 -->
         <div class="col-md-3">
             <div class="neon-card p-4 text-center">
-                <i class="bi bi-truck fs-2 text-primary"></i>
-                <h6 class="mt-3">Free Shipping</h6>
-                <p class="text-muted small mb-0">On all orders over $100</p>
+                <img src="static/img/laptop-screen.png" class="feature-img" width="50px" height="50px">
+                <h6 class="mt-3 text-white">LAPTOPS</h6>
             </div>
         </div>
 
+        <!-- BOX 2 -->
         <div class="col-md-3">
             <div class="neon-card p-4 text-center">
-                <i class="bi bi-arrow-repeat fs-2 text-primary"></i>
-                <h6 class="mt-3">30 Days Return</h6>
-                <p class="text-muted small mb-0">Money-back guarantee</p>
+                <img src="static/img/PC Hardware.png" class="feature-img" width="50px" height="50px">
+                <h6 class="mt-3 text-white">HARDWARE</h6>
             </div>
         </div>
 
+        <!-- BOX 3 -->
         <div class="col-md-3">
             <div class="neon-card p-4 text-center">
-                <i class="bi bi-shield-check fs-2 text-primary"></i>
-                <h6 class="mt-3">Secure Payment</h6>
-                <p class="text-muted small mb-0">100% secure payment</p>
+                <img src="static/img/Accessories.png" class="feature-img"width="50px" height="50px">
+                <h6 class="mt-3 text-white">ACCESSORIES</h6>
             </div>
         </div>
 
+        <!-- BOX 4 -->
         <div class="col-md-3">
             <div class="neon-card p-4 text-center">
-                <i class="bi bi-headset fs-2 text-primary"></i>
-                <h6 class="mt-3">24/7 Support</h6>
-                <p class="text-muted small mb-0">Dedicated support</p>
+                <img src="static/img/Support.png" class="feature-img"width="50px" height="50px">
+                <h6 class="mt-3 text-white">24/7 Support</h6>
             </div>
         </div>
 
     </div>
 </section>
 
-<section class="container py-5">
+<!-- <section class="container py-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>Featured Categories</h3>
@@ -101,7 +103,7 @@
         {% endfor %}
 
     </div>
-</section>
+</section> -->
 
 <section class="container py-5">
 
@@ -125,7 +127,7 @@
 
                 <h6>{{ product.name }}</h6>
 
-                <p class="text-muted small mb-1">{{ product.brand }}</p>
+                <p class=" small mb-1">{{ product.brand }}</p>
 
                 <div class="text-warning small mb-2">
                     ★★★★★
@@ -158,7 +160,7 @@
 
             <div class="col-lg-8">
                 <h2>Upgrade Your Setup</h2>
-                <p class="text-muted mb-0">
+                <p class=" mb-0">
                     Save up to 30% on premium gaming gear.
                 </p>
             </div>
