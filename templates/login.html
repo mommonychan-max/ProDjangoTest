@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login | TechNova{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+
+    <div class="row justify-content-center align-items-center" style="min-height:70vh;">
+
+        <div class="col-lg-5">
+
+            <div class="neon-card p-5">
+
+                <div class="text-center mb-4">
+                    <h2>Welcome Back</h2>
+                    <p class="text-muted">Login to your TechNova account</p>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password"
+                            required>
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+                        Login
+                    </button>
+
+                </form>
+
+                <p class="text-center text-muted mt-4 mb-0">
+                    Do not have an account?
+                    <a href="{% url 'register' %}" class="text-primary text-decoration-none">
+                        Register
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
