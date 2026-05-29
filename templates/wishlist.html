@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Wishlist | FLUFFY{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>My Wishlist</h2>
+
+        <a href="{% url 'products' %}" class="btn btn-outline-light">
+            Continue Shopping
+        </a>
+
+    </div>
+
+    <div class="row g-4">
+
+        {% for item in wishlist_items %}
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="neon-card product-card p-3 h-100">
+
+                {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" class="w-100 mb-3">
+                {% else %}
+                <img src="{% static 'img/product.png' %}" class="w-100 mb-3">
+                {% endif %}
+
+                <h6>{{ item.product.name }}</h6>
+
+                <p class="small text-muted">
+                    {{ item.product.brand }}
+                </p>
+
+                <p class="price">
+                    ${{ item.product.price }}
+                </p>
+
+                <div class="d-flex gap-2">
+
+                    <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-primary btn-sm flex-fill">
+                        Add to Cart
+                    </a>
+
+                    <a href="{% url 'remove_from_wishlist' item.id %}" class="btn btn-outline-danger btn-sm">
+                        Remove
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="neon-card p-5 text-center">
+
+                <h4>Your wishlist is empty.</h4>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

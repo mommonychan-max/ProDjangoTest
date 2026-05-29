@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Admin Dashboard | TechNova{% endblock %}
+{% block title %}Admin Dashboard | FLUFFY{% endblock %}
 
 {% block content %}
 
@@ -10,26 +10,28 @@
 
         <div class="col-lg-2">
 
-            <div class="sidebar-box">
-
-                <h5 class="mb-4">Admin Panel</h5>
-
-                <a href="{% url 'admin_dashboard' %}" class="d-block text-light text-decoration-none mb-3">
+            <div class="sidebar-box admin-sidebar">
+            
+                <h5 class="mb-4 text-white">
+                    Admin Panel
+                </h5>
+            
+                <a href="{% url 'admin_dashboard' %}" class="sidebar-link active-link">
                     Dashboard
                 </a>
-
-                <a href="{% url 'manage_products' %}" class="d-block  text-decoration-none mb-3">
+            
+                <a href="{% url 'manage_products' %}" class="sidebar-link">
                     Products
                 </a>
-
-                <a href="{% url 'manage_orders' %}" class="d-block  text-decoration-none mb-3">
+            
+                <a href="{% url 'manage_orders' %}" class="sidebar-link">
                     Orders
                 </a>
-
-                <a href="{% url 'logout' %}" class="d-block text-danger text-decoration-none">
+            
+                <a href="{% url 'logout' %}" class="sidebar-link logout-link">
                     Logout
                 </a>
-
+            
             </div>
 
         </div>

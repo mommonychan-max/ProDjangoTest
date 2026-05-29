@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'dashboard',
     'payments',
     'products',
+    'wishlist',
     
     'django.contrib.admin',
     'django.contrib.auth',

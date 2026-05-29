@@ -16,19 +16,18 @@ def register_view(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
 
-            Profile.objects.create(
-                user=user,
-                phone=form.cleaned_data.get('phone'),
-                address=form.cleaned_data.get('address'),
-                role='customer'
-            )
+            profile, created = Profile.objects.get_or_create(user=user)
+
+            profile.phone = form.cleaned_data.get('phone')
+            profile.address = form.cleaned_data.get('address')
+            profile.role = 'customer'
+            profile.save()
 
             return redirect('login')
     else:
         form = RegisterForm()
 
     return render(request, 'register.html', {'form': form})
-
 
 def login_view(request):
     if request.method == 'POST':
