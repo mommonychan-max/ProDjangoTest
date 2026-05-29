@@ -60,6 +60,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Computer_storeMS.urls'
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'fluffystorebyteam9@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'ogvuacdxuhlbgtdx'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -68,6 +81,7 @@ TEMPLATES = [
         
         'OPTIONS': {
             'context_processors': [
+                'core.context_processors.cart_counter',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',

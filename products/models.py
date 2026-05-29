@@ -15,7 +15,17 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    brand = models.CharField(max_length=100, blank=True)
+    BRAND_CHOICES = [
+    ('ASUS', 'ASUS'),
+    ('MSI', 'MSI'),
+    ('ROG', 'ROG'),
+    ('Logitech', 'Logitech'),
+    ('Razer', 'Razer'),
+    ('Attack Shark', 'Attack Shark'),
+    ('SteelSeries', 'SteelSeries'),
+    ('HyperX', 'HyperX'),
+]
+    brand = models.CharField(max_length=100,choices=BRAND_CHOICES)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)

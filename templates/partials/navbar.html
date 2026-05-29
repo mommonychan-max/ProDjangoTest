@@ -20,8 +20,14 @@
             </ul>
 
             <div class="d-flex align-items-center gap-3">
-                <a href="{% url 'cart' %}" class="nav-icon">
+                <a href="{% url 'cart' %}" class="nav-icon text-white text-decoration-none">
                     <i class="bi bi-cart3"></i>
+                
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">
+                        {{ cart_count }}
+                    </span>
+                    {% endif %}
                 </a>
 
                 {% if user.is_authenticated %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.http import JsonResponse
 from products.models import Product
 from .models import CartItem
 
@@ -26,7 +26,15 @@ def add_to_cart(request, product_id):
 
     if product.stock <= 0:
         messages.error(request, 'This product is out of stock.')
-        return redirect('products')
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': False,
+                'message': 'This product is out of stock.',
+                'cart_count': CartItem.objects.filter(user=request.user).count()
+            })
+
+        return redirect(request.META.get('HTTP_REFERER', 'products'))
 
     cart_item, created = CartItem.objects.get_or_create(
         user=request.user,
@@ -37,13 +45,30 @@ def add_to_cart(request, product_id):
         if cart_item.quantity < product.stock:
             cart_item.quantity += 1
             cart_item.save()
-            messages.success(request, 'Product quantity updated.')
+            message = 'Product quantity updated.'
+            success = True
         else:
-            messages.error(request, 'Not enough stock available.')
+            message = 'Not enough stock available.'
+            success = False
     else:
-        messages.success(request, 'Product added to cart.')
+        message = 'Product added to cart.'
+        success = True
 
-    return redirect('cart')
+    if success:
+        messages.success(request, message)
+    else:
+        messages.error(request, message)
+
+    cart_count = CartItem.objects.filter(user=request.user).count()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'success': success,
+            'message': message,
+            'cart_count': cart_count
+        })
+
+    return redirect(request.META.get('HTTP_REFERER', 'products'))
 
 
 @login_required

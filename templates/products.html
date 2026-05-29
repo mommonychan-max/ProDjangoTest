@@ -5,11 +5,12 @@
 
 {% block content %}
 
-<section class="container py-5">
+<section class="container-fluid px-4 py-5">
 
     <div class="row g-4">
 
-        <div class="col-lg-3">
+        <!-- SIDEBAR -->
+        <div class="col-lg-2">
 
             <div class="sidebar-box">
 
@@ -20,14 +21,38 @@
                 </a>
 
                 {% for category in categories %}
+
                 <a href="{% url 'products' %}?category={{ category.id }}"
                     class="d-block text-decoration-none text-light mb-2">
+
                     {{ category.name }}
+
                 </a>
+
                 {% endfor %}
 
                 <hr class="border-secondary">
 
+                <!-- BRANDS -->
+                <h5 class="mb-3">Brands</h5>
+
+                <a href="{% url 'products' %}" class="d-block text-decoration-none text-light mb-2">
+                    All Brands
+                </a>
+
+                {% for brand in brands %}
+
+                <a href="?brand={{ brand }}" class="d-block text-decoration-none text-light mb-2">
+
+                    {{ brand }}
+
+                </a>
+
+                {% endfor %}
+
+                <hr class="border-secondary">
+
+                <!-- SEARCH -->
                 <h5 class="mb-3">Search</h5>
 
                 <form method="GET">
@@ -49,80 +74,122 @@
 
         </div>
 
-        <div class="col-lg-9">
+        <!-- PRODUCTS -->
+        <div class="col-lg-10">
 
             <div class="d-flex justify-content-between align-items-center mb-4">
-
+            
                 <h2>All Products</h2>
-
-                <select class="form-select w-auto">
-                    <option>Sort by Featured</option>
-                    <option>Price Low to High</option>
-                    <option>Newest</option>
-                </select>
-
+            
+                <form method="GET">
+            
+                    {% if request.GET.category %}
+                    <input type="hidden" name="category" value="{{ request.GET.category }}">
+                    {% endif %}
+            
+                    {% if request.GET.search %}
+                    <input type="hidden" name="search" value="{{ request.GET.search }}">
+                    {% endif %}
+            
+                    {% if request.GET.brand %}
+                    <input type="hidden" name="brand" value="{{ request.GET.brand }}">
+                    {% endif %}
+            
+                    <select name="sort" class="form-select w-auto" onchange="this.form.submit()">
+            
+                        <option value="low" {% if request.GET.sort == 'low' %} selected {% endif %}> Price Low to High </option>
+                        <option value="high" {% if request.GET.sort == 'high' %} selected {% endif %}> Price High to Low </option>
+                        <option value="new" {% if request.GET.sort == 'new' %} selected {% endif %}> Newest </option>
+                    </select>
+            
+                </form>
+            
             </div>
 
+
+            <!-- PRODUCT GRID -->
             <div class="row g-4">
 
                 {% for product in products %}
 
-                <div class="col-lg-4 col-md-6">
+                <div class="col-xl-3 col-lg-4 col-md-6">
 
                     <div class="neon-card p-3 h-100 d-flex flex-column" style="
-                                border-radius:15px;
-                                overflow:hidden;
-                                min-height:500px;
-                             ">
+                            border-radius:15px;
+                            overflow:hidden;
+                            min-height:500px;
+                         ">
 
-                        {% if product.image %}
-                        <img src="{{ product.image.url }}" class="w-100 mb-3" style="
-                                        height:250px;
-                                        object-fit:cover;
-                                        border-radius:10px;
-                                     ">
-                        {% else %}
-                        <img src="{% static 'img/product.png' %}" class="w-100 mb-3" style="
-                                        height:250px;
-                                        object-fit:cover;
-                                        border-radius:10px;
-                                     ">
-                        {% endif %}
+                        <!-- CLICKABLE IMAGE -->
+                        <a href="{% url 'product_detail' product.id %}">
 
+                            {% if product.image %}
+
+                            <img src="{{ product.image.url }}" class="w-100 mb-3" style="
+                                    height:250px;
+                                    object-fit:cover;
+                                    border-radius:10px;
+                                    cursor:pointer;
+                                 ">
+
+                            {% else %}
+
+                            <img src="{% static 'img/product.png' %}" class="w-100 mb-3" style="
+                                    height:250px;
+                                    object-fit:cover;
+                                    border-radius:10px;
+                                    cursor:pointer;
+                                 ">
+
+                            {% endif %}
+
+                        </a>
+
+                        <!-- PRODUCT NAME -->
                         <h6 style="min-height:50px;">
                             {{ product.name }}
                         </h6>
 
+                        <!-- BRAND -->
                         <p class="text-light small mb-1">
                             {{ product.brand }}
                         </p>
 
+                        <!-- STARS -->
                         <div class="text-warning small mb-2">
                             ★★★★★
                         </div>
 
+                        <!-- PRICE -->
                         <p class="price" style="
-                                    font-size:22px;
-                                    font-weight:bold;
-                               ">
+                                font-size:22px;
+                                font-weight:bold;
+                           ">
+
                             ${{ product.price }}
+
                         </p>
 
-                    <div class="d-flex gap-2 mt-auto">
-                    
-                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm flex-fill">
-                            Add to Cart
-                        </a>
-                    
-                        <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-light btn-sm">
-                            <i class="bi bi-heart"></i>
-                        </a>
-                    
-                        <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-light btn-sm">
-                            View
-                        </a>
-                    
-                    </div>
+                        <!-- BUTTONS -->
+                        <div class="d-flex gap-2 mt-auto">
+
+                            <button type="button" class="btn btn-primary btn-sm flex-fill add-cart-btn"
+                                data-url="{% url 'add_to_cart' product.id %}">
+                                Add to Cart
+                            </button>
+                            <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-light btn-sm">
+
+                                <i class="bi bi-heart"></i>
+
+                            </a>
+
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-light btn-sm">
+
+                                View
+
+                            </a>
+
+                        </div>
 
                     </div>
 
@@ -131,16 +198,21 @@
                 {% empty %}
 
                 <div class="col-12">
+
                     <div class="neon-card p-5 text-center">
+
                         <h4>No products found</h4>
+
                     </div>
+
                 </div>
 
                 {% endfor %}
 
             </div>
 
-            <div class="d-flex justify-content-center mt-5">
+            <!-- PAGINATION -->
+            <div class="d-flex justify-content-center pt-5 mt-4">
 
                 <nav>
 
@@ -149,27 +221,39 @@
                         {% if products.has_previous %}
 
                         <li class="page-item">
+
                             <a class="page-link"
                                 href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ products.previous_page_number }}">
+
                                 Previous
+
                             </a>
+
                         </li>
 
                         {% endif %}
 
                         <li class="page-item active">
+
                             <span class="page-link">
+
                                 {{ products.number }}
+
                             </span>
+
                         </li>
 
                         {% if products.has_next %}
 
                         <li class="page-item">
+
                             <a class="page-link"
                                 href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ products.next_page_number }}">
+
                                 Next
+
                             </a>
+
                         </li>
 
                         {% endif %}

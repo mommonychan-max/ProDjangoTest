@@ -24,22 +24,39 @@ def product_list(request):
     category_id = request.GET.get('category')
 
     search = request.GET.get('search')
+    brand = request.GET.get('brand')
+
+    sort = request.GET.get('sort')
+
+
 
     if category_id:
         products = products.filter(category_id=category_id)
 
     if search:
         products = products.filter(name__icontains=search)
+    if brand:
+        products = products.filter(brand__iexact=brand)
+        
+    if sort == 'low':
+        products = products.order_by('price')
+
+    elif sort == 'high':
+        products = products.order_by('-price')
+
+    elif sort == 'new':
+        products = products.order_by('-created_at')
 
     paginator = Paginator(products, 8)
 
     page_number = request.GET.get('page')
 
     products = paginator.get_page(page_number)
-
+    brands = Product.objects.values_list('brand',flat=True).distinct()
     return render(request, 'products.html', {
         'products': products,
-        'categories': categories
+        'categories': categories,
+        'brands': brands
     })
 
 

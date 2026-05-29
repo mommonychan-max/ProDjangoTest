@@ -14,9 +14,10 @@ def payment_view(request, order_id):
         user=request.user
     )
 
-    if Payment.objects.filter(order=order).exists():
-        messages.error(request, 'This order has already been paid.')
-        return redirect('order_history')
+    existing_payment = Payment.objects.filter(order=order).first()
+
+    if existing_payment:
+        return redirect('receipt', order_id=order.id)
 
     if request.method == 'POST':
         payment_method = request.POST.get('payment_method')
@@ -33,8 +34,31 @@ def payment_view(request, order_id):
 
         messages.success(request, 'Payment successful.')
 
-        return redirect('order_history')
+        return redirect('receipt', order_id=order.id)
 
     return render(request, 'payment.html', {
         'order': order
     })
+
+@login_required
+def receipt_view(request, order_id):
+
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user
+    )
+
+    payment = Payment.objects.filter(
+        order=order
+    ).first()
+
+    return render(
+        request,
+        'receipt.html',
+        {
+            'order': order,
+            'payment': payment
+        }
+    )
+

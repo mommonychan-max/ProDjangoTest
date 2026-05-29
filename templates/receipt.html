@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+
+{% block title %}Receipt | FLUFFY{% endblock %}
+
+{% block content %}
+
+<section class="receipt-page">
+
+    <div class="receipt-paper">
+
+        <div class="receipt-header">
+
+            <div class="store-logo">
+                FLUFFY
+            </div>
+
+            <p class="store-subtitle">
+                COMPUTER STORE
+            </p>
+
+            <p class="store-info">
+                Phnom Penh, Cambodia
+                <br>
+                Tel: +855 77 567 619
+                <br>
+                Telegram: @fluffysp24l7
+            </p>
+
+        </div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-info">
+
+            <div>
+                <span>Receipt No</span>
+                <strong>#INV{{ order.id }}</strong>
+            </div>
+
+            <div>
+                <span>Customer</span>
+                <strong>{{ request.user.username }}</strong>
+            </div>
+
+            <div>
+                <span>Payment</span>
+                <strong>{{ payment.payment_method|upper }}</strong>
+            </div>
+
+            <div>
+                <span>Status</span>
+                <strong>{{ payment.status|upper }}</strong>
+            </div>
+
+        </div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-table-head">
+
+            <span>ITEM</span>
+            <span>QTY</span>
+            <span>PRICE</span>
+
+        </div>
+
+        <div class="receipt-line thin"></div>
+
+        {% for item in order.orderitem_set.all %}
+
+        <div class="receipt-item">
+
+            <div class="item-name">
+                {{ item.product.name }}
+                <small>Warranty: 7 Days</small>
+            </div>
+
+            <div class="item-qty">
+                x{{ item.quantity }}
+            </div>
+
+            <div class="item-price">
+                ${{ item.price }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-total">
+
+            <span>TOTAL PAID</span>
+
+            <strong>
+                ${{ payment.amount }}
+            </strong>
+
+        </div>
+
+        <div class="success-box">
+            PAYMENT SUCCESS
+        </div>
+
+        <div class="barcode">
+            ||||| || |||| ||||| |||
+        </div>
+
+        <div class="receipt-note">
+
+            <p>
+                Warranty valid only with this receipt.
+            </p>
+
+            <p>
+                Thank you for shopping with FLUFFY.
+            </p>
+
+        </div>
+
+        <div class="receipt-actions">
+
+            <button onclick="window.print()" class="btn btn-dark">
+
+                Print Receipt
+
+            </button>
+
+            <a href="{% url 'products' %}" class="btn btn-outline-dark">
+
+                Continue Shopping
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+    .receipt-page {
+        min-height: calc(100vh - 90px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 15px;
+    }
+
+    .receipt-paper {
+        background: #ffffff;
+        color: #111111;
+        width: 420px;
+        padding: 28px;
+        border-radius: 12px;
+        font-family: 'Courier New', monospace;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+    }
+
+    .receipt-header {
+        text-align: center;
+    }
+
+    .store-logo {
+        font-size: 38px;
+        font-weight: 900;
+        letter-spacing: 4px;
+    }
+
+    .store-subtitle {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .store-info {
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .receipt-line {
+        border-top: 2px dashed #111;
+        margin: 18px 0;
+    }
+
+    .receipt-line.thin {
+        border-top: 1px dashed #111;
+        margin: 10px 0 14px;
+    }
+
+    .receipt-info div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .receipt-info span {
+        color: #444;
+    }
+
+    .receipt-table-head {
+        display: grid;
+        grid-template-columns: 1fr 55px 75px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .receipt-table-head span:nth-child(2),
+    .receipt-table-head span:nth-child(3) {
+        text-align: right;
+    }
+
+    .receipt-item {
+        display: grid;
+        grid-template-columns: 1fr 55px 75px;
+        gap: 8px;
+        margin-bottom: 14px;
+        font-size: 14px;
+    }
+
+    .item-name small {
+        display: block;
+        font-size: 11px;
+        color: #555;
+        margin-top: 3px;
+    }
+
+    .item-qty,
+    .item-price {
+        text-align: right;
+    }
+
+    .receipt-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .receipt-total strong {
+        font-size: 22px;
+    }
+
+    .success-box {
+        border: 2px solid #111;
+        text-align: center;
+        padding: 12px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 18px;
+    }
+
+    .barcode {
+        text-align: center;
+        font-size: 32px;
+        letter-spacing: 5px;
+        margin-bottom: 18px;
+        white-space: nowrap;
+    }
+
+    .receipt-note {
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .receipt-note p {
+        margin-bottom: 6px;
+    }
+
+    .receipt-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 22px;
+    }
+
+    /* PRINT RECEIPT SIZE */
+    @media print {
+
+        @page {
+            size: 80mm auto;
+            margin: 0;
+        }
+
+        html,
+        body {
+            width: 80mm;
+            background: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        body * {
+            visibility: hidden;
+        }
+
+        .receipt-paper,
+        .receipt-paper * {
+            visibility: visible;
+        }
+
+        .receipt-page {
+            display: block;
+            padding: 0;
+            margin: 0;
+            min-height: 0;
+        }
+
+        .receipt-paper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80mm;
+            padding: 6mm;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .main-navbar,
+        .footer-section,
+        .receipt-actions {
+            display: none !important;
+        }
+
+        .store-logo {
+            font-size: 28px;
+        }
+
+        .barcode {
+            font-size: 24px;
+            letter-spacing: 3px;
+        }
+
+    }
+</style>
+
+{% endblock %}

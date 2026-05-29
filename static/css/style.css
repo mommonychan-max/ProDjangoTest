@@ -66,7 +66,38 @@ body {
 }
 .nav-icon {
     color: white;
-    font-size: 20px;
+    text-decoration: none;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-size: 22px;
+}
+
+.nav-icon:hover {
+    color: white;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -10px;
+    right: -12px;
+
+    background: #dc2626;
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    min-width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1;
 }
 
 /* HERO */
@@ -347,9 +378,21 @@ i.text-primary {
     background: #141414;
     border: 1px solid #2a2a2a;
     color: white;
+
+    border-radius: 12px;
+
+    padding: 10px 18px;
+
+    transition: .2s;
+}
+.pagination .page-item {
+    margin: 0 12px;
+}
+.pagination .page-link:hover {
+    background: #222;
 }
 
-.pagination .page-item.active .page-link {
+.pagination .active .page-link {
     background: white;
     color: black;
     border-color: white;
@@ -399,4 +442,14 @@ i.text-primary {
         justify-content: center;
     }
 
+}
+    css .receipt-paper {
+    background: white;
+    color: black;
+    width: 380px;
+    padding: 30px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .4);
+    margin: auto;
 }
