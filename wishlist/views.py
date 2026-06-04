@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -19,18 +20,32 @@ def wishlist_view(request):
 def add_to_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
-    wishlist_item, created = Wishlist.objects.get_or_create(
-        user=request.user,
-        product=product
-    )
+    wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
 
-    if created:
-        messages.success(request, 'Product added to wishlist.')
+    if wishlist_item:
+        # Already in wishlist → REMOVE it
+        wishlist_item.delete()
+        success = True
+        message = 'Removed from wishlist.'
     else:
-        messages.error(request, 'Product is already in wishlist.')
+        # Not in wishlist → ADD it
+        Wishlist.objects.create(user=request.user, product=product)
+        success = True
+        message = 'Added to wishlist.'
+
+    wishlist_count = Wishlist.objects.filter(user=request.user).count()
+    wishlist_product_ids = list(Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True))
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'success': success,
+            'message': message,
+            'wishlist_count': wishlist_count,
+            'wishlist_product_ids': wishlist_product_ids,
+            'product_id': product_id,
+        })
 
     return redirect('products')
-
 
 @login_required
 def remove_from_wishlist(request, id):

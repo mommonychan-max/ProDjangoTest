@@ -3,14 +3,20 @@ from products.models import Product, Category
 from .models import ContactMessage
 from django.core.mail import send_mail
 from django.conf import settings
+from wishlist.models import Wishlist
 
 def home(request):
     products = Product.objects.filter(is_active=True)[:8]
     categories = Category.objects.all()[:6]
 
+    wishlist_product_ids = []
+    if request.user.is_authenticated:
+        wishlist_product_ids = list(Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True))
+
     return render(request, 'home.html', {
         'products': products,
-        'categories': categories
+        'categories': categories,
+        'wishlist_product_ids': wishlist_product_ids,
     })
 
 

@@ -47,4 +47,4 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return f"{self.user.username}'s wishlist"
+        return self.name

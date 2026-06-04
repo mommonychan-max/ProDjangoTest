@@ -23,34 +23,36 @@
 
         <div class="col-lg-3 col-md-6">
 
-            <div class="neon-card product-card p-3 h-100">
+            <div class="neon-card product-card p-3 h-100" style="
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 420px;
+                border-radius: 15px;
+                overflow: hidden;
+            ">
 
-                {% if item.product.image %}
-                <img src="{{ item.product.image.url }}" class="w-100 mb-3">
-                {% else %}
-                <img src="{% static 'img/product.png' %}" class="w-100 mb-3">
-                {% endif %}
+                <div style="height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; overflow: hidden;">
+                    {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
+                    {% else %}
+                    <img src="{% static 'img/product.png' %}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
+                    {% endif %}
+                </div>
 
-                <h6>{{ item.product.name }}</h6>
-
-                <p class="small text-muted">
-                    {{ item.product.brand }}
-                </p>
-
-                <p class="price">
-                    ${{ item.product.price }}
-                </p>
+                <div style="flex-grow: 1; padding: 0 5px;">
+                    <h6 style="margin-bottom: 8px; line-height: 1.4; min-height: 50px;">{{ item.product.name }}</h6>
+                    <p class="small text-muted" style="margin-bottom: 8px;">{{ item.product.brand }}</p>
+                    <p class="price" style="font-size: 22px; font-weight: bold; margin-bottom: 15px;">${{ item.product.price }}</p>
+                </div>
 
                 <div class="d-flex gap-2">
-
                     <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-primary btn-sm flex-fill">
                         Add to Cart
                     </a>
-
                     <a href="{% url 'remove_from_wishlist' item.id %}" class="btn btn-outline-danger btn-sm">
                         Remove
                     </a>
-
                 </div>
 
             </div>
@@ -60,13 +62,9 @@
         {% empty %}
 
         <div class="col-12">
-
             <div class="neon-card p-5 text-center">
-
                 <h4>Your wishlist is empty.</h4>
-
             </div>
-
         </div>
 
         {% endfor %}
