@@ -39,9 +39,10 @@
                     <div class="col-md-2">
                         <form method="POST" action="{% url 'update_cart' item.id %}">
                             {% csrf_token %}
+
                             <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
-                                class="form-control form-control-sm">
-                            <button class="btn btn-sm btn-primary mt-2">Update</button>
+                                max="{{ item.product.stock }}" class="form-control form-control-sm"
+                                onchange="this.form.submit()">
                         </form>
                     </div>
 

@@ -41,7 +41,12 @@ def add_to_cart(request, product_id):
         product=product
     )
 
-    if not created:
+    if created:
+        cart_item.quantity = 1
+        cart_item.save()
+        message = 'Product added to cart.'
+        success = True
+    else:
         if cart_item.quantity < product.stock:
             cart_item.quantity += 1
             cart_item.save()
@@ -50,16 +55,13 @@ def add_to_cart(request, product_id):
         else:
             message = 'Not enough stock available.'
             success = False
-    else:
-        message = 'Product added to cart.'
-        success = True
+
+    cart_count = CartItem.objects.filter(user=request.user).count()
 
     if success:
         messages.success(request, message)
     else:
         messages.error(request, message)
-
-    cart_count = CartItem.objects.filter(user=request.user).count()
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({
@@ -88,25 +90,19 @@ def remove_from_cart(request, id):
 
 @login_required
 def update_cart(request, id):
-    cart_item = get_object_or_404(
+    item = get_object_or_404(
         CartItem,
         id=id,
         user=request.user
     )
 
-    if request.method == 'POST':
-        quantity = int(request.POST.get('quantity'))
+    if request.method == "POST":
+        quantity = int(request.POST.get("quantity", 1))
 
         if quantity < 1:
             quantity = 1
 
-        if quantity > cart_item.product.stock:
-            quantity = cart_item.product.stock
-            messages.error(request, 'Quantity changed to available stock only.')
-        else:
-            messages.success(request, 'Cart updated successfully.')
-
-        cart_item.quantity = quantity
-        cart_item.save()
+        item.quantity = quantity
+        item.save()
 
     return redirect('cart')
