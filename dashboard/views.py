@@ -17,8 +17,8 @@ def dashboard_view(request):
 
     elif role == 'staff':
         return redirect('admin_dashboard')
-
-    return render(request, 'dashboard.html')
+    else:
+        return render(request, 'dashboard.html')
 
 
 @login_required
